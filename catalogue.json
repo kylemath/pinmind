@@ -1,0 +1,11 @@
+{
+  "id": "pinmind",
+  "title": "PinMind",
+  "oneLiner": "Personal Pinterest and aesthetic taste engine that extracts visual DNA from uploaded images, defines your interests, and generates similar visual ideas.",
+  "demoUrl": "https://kylemath.github.io/pinmind",
+  "screenshot": "https://raw.githubusercontent.com/kylemath/pinmind/main/screenshot.png",
+  "kind": "project",
+  "categories": ["ai", "design", "pinterest", "visual-discovery", "generative-art", "web-app"],
+  "tags": ["ai", "design", "pinterest", "visual-discovery", "generative-art", "web-app"],
+  "status": "published"
+}

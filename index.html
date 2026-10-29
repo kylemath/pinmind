@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PinMind — Personal Visual Discovery & Interest Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand" id="brandLogo">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.48 2 2 6.48 2 12c0 4.25 2.66 7.88 6.41 9.31-.09-.79-.17-2.01.04-2.87.18-.78 1.18-5.01 1.18-5.01s-.3-.6-.3-1.49c0-1.4.81-2.44 1.82-2.44.86 0 1.27.64 1.27 1.41 0 .86-.55 2.15-.83 3.34-.24 1 .5 1.81 1.48 1.81 1.78 0 3.15-1.88 3.15-4.59 0-2.4-1.72-4.08-4.18-4.08-2.85 0-4.52 2.14-4.52 4.35 0 .86.33 1.78.75 2.28.08.1.09.19.07.29-.08.31-.25 1.01-.28 1.15-.04.18-.15.22-.34.13-1.25-.58-2.03-2.41-2.03-3.88 0-3.16 2.3-6.06 6.63-6.06 3.48 0 6.18 2.48 6.18 5.8 0 3.46-2.18 6.24-5.21 6.24-1.02 0-1.97-.53-2.3-1.15l-.63 2.38c-.23.88-.84 1.98-1.25 2.65.94.29 1.93.45 2.96.45 5.52 0 10-4.48 10-10S17.52 2 12 2z"/>
+          </svg>
+        </div>
+        <span class="brand-name">PinMind</span>
+        <span class="brand-badge">Taste AI</span>
+      </div>
+
+      <!-- Board & View Tabs -->
+      <nav class="nav-pills" id="boardTabs">
+        <button class="nav-pill active" data-filter="all">All Pins <span class="pill-count" id="countAll">0</span></button>
+        <button class="nav-pill" data-filter="uploaded">My Uploads <span class="pill-count" id="countUploaded">0</span></button>
+        <button class="nav-pill" data-filter="generated">Generated Ideas <span class="pill-count" id="countGenerated">0</span></button>
+      </nav>
+
+      <!-- Custom Board Selector -->
+      <div class="board-selector-wrap">
+        <select id="customBoardSelect" class="board-select" title="Filter by Custom Board">
+          <option value="">All Boards</option>
+        </select>
+        <button class="btn-icon-sm" id="addBoardBtn" title="Create New Board">+</button>
+      </div>
+    </div>
+
+    <div class="topbar-center">
+      <div class="search-bar">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search your pins, colors, moods, or ideas..." />
+        <button id="clearSearchBtn" class="clear-search hidden" title="Clear search">&times;</button>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="btn btn-secondary" id="uploadTriggerBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload Images
+      </button>
+      <button class="btn btn-primary" id="generateIdeasBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+        Generate Similar Ideas
+      </button>
+      <button class="btn-icon" id="toggleProfileBtn" title="Toggle Interest DNA Sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+          <polyline points="2 17 12 22 22 17"/>
+          <polyline points="2 12 12 17 22 12"/>
+        </svg>
+      </button>
+      <button class="btn-icon" id="settingsBtn" title="Hybrid AI & Gemini API Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        <span class="ai-status-dot" id="aiStatusDot"></span>
+      </button>
+    </div>
+  </header>
+
+  <input type="file" id="fileInput" multiple accept="image/*" class="hidden" />
+
+  <!-- Main Workspace -->
+  <div class="workspace">
+    <!-- Left / Main Content Area -->
+    <main class="main-stage" id="mainStage">
+      <!-- Upload Dropzone Banner (compact when pins exist, prominent when empty) -->
+      <section class="dropzone-hero" id="dropzoneHero">
+        <div class="dropzone-inner" id="dropzoneBox">
+          <div class="dropzone-icon-group">
+            <div class="floating-card fc-1"></div>
+            <div class="floating-card fc-2"></div>
+            <div class="dropzone-main-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="3" ry="3"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+            </div>
+          </div>
+          <div class="dropzone-text">
+            <h2>Drop images here to map your aesthetic &amp; spark new ideas</h2>
+            <p>Upload photos, screenshots, rooms, outfits, art, or textures. PinMind extracts your visual DNA, defines your interests, and generates new matching concepts.</p>
+          </div>
+          <div class="dropzone-actions">
+            <button class="btn btn-primary" id="heroUploadBtn">Choose Images to Upload</button>
+            <button class="btn btn-ghost" id="loadSamplePackBtn">✨ Load Sample Inspiration Pack</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Filter / Tag Bar -->
+      <div class="interest-filter-bar" id="interestFilterBar">
+        <span class="filter-bar-label">Your Interest Tags:</span>
+        <div class="tag-scroll" id="activeInterestTags">
+          <span class="tag-empty-hint">Upload images to discover your signature tags...</span>
+        </div>
+      </div>
+
+      <!-- Status Toast / Generation Banner -->
+      <div class="generation-status hidden" id="generationStatus">
+        <div class="spinner"></div>
+        <span id="generationStatusText">Analyzing visual DNA &amp; generating similar ideas...</span>
+      </div>
+
+      <!-- Masonry Grid -->
+      <section class="masonry-container">
+        <div class="masonry-grid" id="masonryGrid"></div>
+      </section>
+    </main>
+
+    <!-- Right Sidebar: "Defines My Interests" / Taste DNA Panel -->
+    <aside class="taste-sidebar" id="tasteSidebar">
+      <div class="sidebar-header">
+        <div>
+          <span class="eyebrow">LIVE TASTE PROFILE</span>
+          <h3>Your Aesthetic DNA</h3>
+        </div>
+        <button class="btn-text" id="refreshAnalysisBtn" title="Re-synthesize interest profile">Refresh</button>
+      </div>
+
+      <div id="profileEmptyState" class="profile-empty">
+        <div class="profile-empty-art">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </div>
+        <h4>No Visual Data Yet</h4>
+        <p>Upload 1 or more images (or load the sample pack) to see PinMind decode your dominant aesthetic persona, color palette, and core interests.</p>
+      </div>
+
+      <div id="profileContent" class="profile-content hidden">
+        <!-- Persona Card -->
+        <div class="persona-card" id="personaCard">
+          <div class="persona-badge-row">
+            <span class="persona-chip" id="personaEngineBadge">Visual DNA Engine</span>
+            <span class="persona-confidence" id="personaPinCount">0 pins analyzed</span>
+          </div>
+          <h2 class="persona-title" id="personaTitle">—</h2>
+          <p class="persona-summary" id="personaSummary">—</p>
+        </div>
+
+        <!-- Signature Color Palette -->
+        <div class="sidebar-section">
+          <div class="section-title-row">
+            <h4>Signature Color Palette</h4>
+            <span class="section-sub">Click swatch to filter</span>
+          </div>
+          <div class="palette-bar" id="signaturePaletteBar"></div>
+          <div class="palette-swatches" id="signatureSwatches"></div>
+        </div>
+
+        <!-- Aesthetic Radar / Spectrum Bars -->
+        <div class="sidebar-section">
+          <div class="section-title-row">
+            <h4>Visual Spectrum</h4>
+            <span class="section-sub">Extracted from pixels</span>
+          </div>
+          <div class="spectrum-list" id="spectrumList"></div>
+        </div>
+
+        <!-- Defined Interest Categories -->
+        <div class="sidebar-section">
+          <div class="section-title-row">
+            <h4>Defined Interests &amp; Motifs</h4>
+            <span class="section-sub">Click to generate</span>
+          </div>
+          <div class="interest-clusters" id="interestClusters"></div>
+        </div>
+
+        <!-- Suggested Next Explorations -->
+        <div class="sidebar-section">
+          <div class="section-title-row">
+            <h4>Recommended Idea Prompts</h4>
+            <span class="section-sub">1-click spark</span>
+          </div>
+          <div class="prompt-suggestions" id="promptSuggestions"></div>
+        </div>
+
+        <div class="sidebar-footer-actions">
+          <button class="btn btn-secondary btn-full" id="remixAllBtn">
+            ✨ Synthesize 4 New Pins From Profile
+          </button>
+          <button class="btn btn-ghost btn-full btn-sm" id="clearAllDataBtn">
+            Reset Board &amp; Profile
+          </button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Pin Detail & Remix Modal -->
+  <div class="modal-backdrop hidden" id="pinModal">
+    <div class="modal-card pin-modal-card">
+      <button class="modal-close" id="closePinModalBtn">&times;</button>
+      <div class="pin-modal-body">
+        <div class="pin-modal-media" id="modalMediaWrap">
+          <img id="modalImage" src="" alt="" />
+        </div>
+        <div class="pin-modal-info">
+          <div class="pin-modal-meta-top">
+            <span class="pin-origin-badge" id="modalOriginBadge">Uploaded Pin</span>
+            <div class="pin-modal-actions">
+              <select id="modalBoardSelect" class="board-select"></select>
+              <button class="btn-icon-sm danger" id="modalDeletePinBtn" title="Delete Pin">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <h2 id="modalTitle" class="modal-pin-title">Pin Title</h2>
+          <p id="modalDescription" class="modal-pin-desc">Description</p>
+
+          <div class="modal-inspiration-box" id="modalInspirationBox">
+            <span class="meta-label">WHY IT MATCHES YOUR INTERESTS</span>
+            <p id="modalMatchReason"></p>
+          </div>
+
+          <div class="modal-section">
+            <span class="meta-label">EXTRACTED COLOR HARMONY</span>
+            <div class="modal-swatches" id="modalSwatches"></div>
+          </div>
+
+          <div class="modal-section">
+            <span class="meta-label">AESTHETIC &amp; INTEREST TAGS</span>
+            <div class="modal-tags" id="modalTags"></div>
+          </div>
+
+          <div class="modal-section">
+            <span class="meta-label">VISUAL METRICS</span>
+            <div class="modal-metrics-grid" id="modalMetricsGrid"></div>
+          </div>
+
+          <div class="modal-cta-row">
+            <button class="btn btn-primary btn-full" id="modalSparkSimilarBtn">
+              ✨ Generate 3 New Ideas Like This Pin
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings / Hybrid Gemini API Modal -->
+  <div class="modal-backdrop hidden" id="settingsModal">
+    <div class="modal-card settings-modal-card">
+      <div class="modal-header">
+        <h3>Hybrid AI Engine Settings</h3>
+        <button class="modal-close-inline" id="closeSettingsModalBtn">&times;</button>
+      </div>
+      <div class="modal-content-body">
+        <p class="settings-intro">
+          <strong>PinMind runs in Hybrid Mode:</strong> It works immediately offline/keyless using client-side pixel LAB/HSL color clustering, visual feature analysis, and curated + generative visual synthesis.
+        </p>
+        <p class="settings-intro">
+          Optionally add a <strong>Google Gemini API Key</strong> to unlock deep Vision critique (`gemini-2.5-flash`) on your uploaded images and live AI concept &amp; visual synthesis.
+        </p>
+
+        <div class="form-group">
+          <label for="geminiKeyInput">Gemini API Key (Optional)</label>
+          <input type="password" id="geminiKeyInput" placeholder="AIzaSy..." autocomplete="off" />
+          <span class="form-hint">Stored only in your browser's localStorage. Never sent anywhere except `generativelanguage.googleapis.com`.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="visualGenStyleSelect">Generated Pin Visual Style</label>
+          <select id="visualGenStyleSelect" class="form-select">
+            <option value="hybrid">Hybrid (Curated Photography + Bespoke Aesthetic Art Cards)</option>
+            <option value="photography">Curated High-Res Photography Only</option>
+            <option value="generative_art">Bespoke Procedural Aesthetic Art &amp; Moodboards Only</option>
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-ghost" id="clearApiKeyBtn">Use Keyless Mode</button>
+          <button class="btn btn-primary" id="saveSettingsBtn">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Board Modal -->
+  <div class="modal-backdrop hidden" id="newBoardModal">
+    <div class="modal-card small-modal-card">
+      <div class="modal-header">
+        <h3>Create Custom Board</h3>
+        <button class="modal-close-inline" id="closeNewBoardModalBtn">&times;</button>
+      </div>
+      <div class="modal-content-body">
+        <div class="form-group">
+          <label for="newBoardNameInput">Board Name</label>
+          <input type="text" id="newBoardNameInput" placeholder="e.g., Studio Redesign, Autumn Wardrobe, Sci-Fi UI..." />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-full" id="confirmCreateBoardBtn">Create Board</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
