@@ -1,5 +1,7 @@
 # PinMind — Personal Visual Discovery & Interest Engine
 
+🚀 **[Live Demo](https://kylemath.github.io/pinmind)** 🚀
+
 **PinMind** is a personal Pinterest and Aesthetic Taste Engine. Upload any set of images (interior spaces, architecture, outfits, objects, textures, or art) and PinMind analyzes their pixel-level color harmony, lighting, and visual metrics to define your core aesthetic interests and generate new matching visual ideas.
 
 ## Features
